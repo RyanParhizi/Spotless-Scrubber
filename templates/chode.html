@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Spotless CRM!</title>
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+        }
+        .forms-container {
+            display: flex;
+            justify-content: space-between; /* Adjusts the spacing between forms */
+        }
+        .form-item {
+            margin: 10px; /* Adds a little space around the forms */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div style="display: flex; justify-content: flex-end;">
+            <ol style="height: 205px; width: 100%; overflow: auto; border: 1px solid #ccc;">
+                {% for contact in contacts %}
+                <li>{{ contact.0 }} {{ contact.1 }} - {{ contact.2 }} - {{ contact.3 }} - {{ contact.4 }}</li>
+                {% endfor %}            
+            </ol>
+        </div>
+
+        <div class="forms-container">
+            <div class="form-item">
+                <form action="/" method="post">
+                    <h2>Input Contact</h2>
+                    <input type="text" name="firstname" placeholder="firstname"><br><br>
+                    <input type="text" name="lastname" placeholder="lastname"><br><br>
+                    <input type="text" name="phone" placeholder="phone"><br><br>
+                    <input type="text" name="email" placeholder="email"><br><br>
+                    <button type="submit" name="action1" value="add_contact">Add Contact</button>
+                </form>
+            </div>
+
+            <div class="form-item">
+                <form action="/" method="post">
+                    <h2>Send Emails</h2>
+                    <input type="text" name="subject" placeholder="subject" style="width: 400px; height: 30px;"><br><br>
+                    <textarea name="body" placeholder="body" style="width: 400px; height: 100px;"></textarea><br><br>
+                    <button type="submit" name="action2" value="send_email">Send Email</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="form-item">
+            <form action="/upload_csv" method="post" enctype="multipart/form-data">
+                <h2>Upload CSV</h2>
+                <input type="file" name="contacts_csv" accept=".csv"><br><br>
+                <button type="submit">Upload CSV</button>
+            </form>
+        </div>        
+
+        <div class="form-item">
+            <form action="/" method="post">
+                <h2>Delete Contact</h2>
+                <input type="text" name="ID number" placeholder="ID number">
+                <button type="submit" name="action3" value="remove_contact">Remove Contact</button>
+            </form>
+        </div>
+    </div>
+    
+</body>
+
+</html>

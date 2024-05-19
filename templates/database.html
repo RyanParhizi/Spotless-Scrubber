@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <link href="/static/database.css" rel="stylesheet">
+
+    <head>
+        edit database 
+    </head>
+
+    <body>
+        <a href="http://127.0.0.1:3000">
+            <button>back</button> 
+        </a>
+    </body>
+
+    <table> 
+    
+    {% for contact in contacts %}
+        <tr>
+            <td> {{ contact.0 }} </td>
+            <td> {{ contact.1 }} </td>
+            <td> {{ contact.2 }} </td>
+            <td> {{ contact.3 }} </td>
+            <td> {{ contact.4 }} </td>
+        </tr>
+    {% endfor %}
+
+    </table>
+</html>
