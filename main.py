@@ -1,10 +1,8 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 from database import add_contact, fetch_all_contacts, remove_contacts_by_ID
-from emailage import send_email
 
-
-app = Flask(__name__) 
+app = Flask(__name__)
 
 @app.route("/")
 def home():
@@ -14,16 +12,35 @@ def home():
 def send():
     return render_template("send.html")
 
-@app.route("/database")
+@app.route('/database', methods=['GET', 'POST'])
 def database():
-
-    # if request.method == 'POST':
-    #     if request.form.get('action') == 'send_email':
+    if request.method == 'POST':
+        action = request.form['action']
+        if action == 'add':
+            firstname = request.form['firstname']
+            lastname = request.form['lastname']
+            phone = request.form['phone']
+            email = request.form['email']
+            
+            with sqlite3.connect('database.sqlite') as conn:
+                add_contact(conn, firstname, lastname, phone, email)
+                
+        elif action == 'delete':
+            contact_id = request.form['id']
+            
+            with sqlite3.connect('database.sqlite') as conn:
+                remove_contacts_by_ID(contact_id, conn)
+                
+        return redirect(url_for('database'))
 
     with sqlite3.connect('database.sqlite') as conn:
         contacts = fetch_all_contacts(conn)
 
-    return render_template("database.html", contacts = contacts)
+    return render_template("database.html", contacts=contacts)
+
+if __name__ == "__main__":
+    app.run(debug=True, host='0.0.0.0', port=3000)
+
  
 # app.route('/send', methods=['GET', 'POST'])
 # def send():
@@ -38,31 +55,3 @@ def database():
 #                 send_email(subject, body, smtp_server, conn)
             
 #     return render_template('send.html')
-
-# app.route('/database', methods=['GET', 'POST'])
-# def database():
-#     if request.method == 'POST':
-
-#         if request.form.get('action1') == 'add_contact':
-        
-#             firstname = request.form.get('firstname')
-#             lastname = request.form.get('lastname')
-#             phone = request.form.get('phone')
-#             email = request.form.get('email')
-        
-#             with sqlite3.connect('database.sqlite') as conn:
-#                 add_contact(firstname, lastname, phone, email, conn)
-
-#         elif request.form.get('action3') == 'remove_contact':
-#             ID_num = request.form.get('ID number')
-
-#             with sqlite3.connect('database.sqlite') as conn:
-#                     remove_contacts_by_ID(ID_num, conn)
-
-#     with sqlite3.connect('database.sqlite') as conn:
-#         contacts = fetch_all_contacts(conn)
-
-#     return render_template('database.html', contacts=contacts)
-
-if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=3000)

@@ -16,9 +16,8 @@ from faker import Faker
 # conn.commit()
 # conn.close()
 
-def add_contact(firstname, lastname, phone, email, conn):
+def add_contact(conn, firstname, lastname, phone, email):
     cur = conn.cursor()
-    #this does the same thing as the autoincrmenet from sql 
     cur.execute("SELECT MAX(ID) FROM contacts")
     max_id = cur.fetchone()[0]
     next_id = 1 if max_id is None else max_id + 1
@@ -35,13 +34,12 @@ def fetch_all_contacts(conn):
 def fetch_all_contact_emails(conn):
     cur = conn.cursor()
     cur.execute("SELECT email FROM contacts")
-    emails = cur.fetchall() #I think this returns a list of tuples 
+    emails = cur.fetchall() # This returns a list of tuples 
     return emails
-
 
 def remove_contacts_by_ID(ID, conn):
     cur = conn.cursor()
-    cur.execute("DELETE FROM contacts WHERE ID=?",(ID,))
+    cur.execute("DELETE FROM contacts WHERE ID=?", (ID,))
     conn.commit()
 
 # def add_fake_contact(NOC, conn):
