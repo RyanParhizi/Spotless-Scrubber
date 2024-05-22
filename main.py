@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, url_for
 import sqlite3
 from database import add_contact, fetch_all_contacts, remove_contacts_by_ID
+from emailage import send_email 
 
 app = Flask(__name__)
 
@@ -8,8 +9,18 @@ app = Flask(__name__)
 def home():
     return render_template("home.html")
 
-@app.route("/send")
+@app.route("/send", methods=['GET', 'POST'])
 def send():
+    if request.method == 'POST':
+        action = request.form['action']
+        if action =='send':
+            subject = request.form.get('subject')
+            body = request.form.get('body')
+            smtp_server = "smtp.gmail.com"
+
+            with sqlite3.connect('database.sqlite') as conn:
+                send_email(subject, body, smtp_server, conn)
+
     return render_template("send.html")
 
 @app.route('/database', methods=['GET', 'POST'])
@@ -30,8 +41,6 @@ def database():
             
             with sqlite3.connect('database.sqlite') as conn:
                 remove_contacts_by_ID(contact_id, conn)
-                
-        return redirect(url_for('database'))
 
     with sqlite3.connect('database.sqlite') as conn:
         contacts = fetch_all_contacts(conn)
@@ -40,18 +49,3 @@ def database():
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=3000)
-
- 
-# app.route('/send', methods=['GET', 'POST'])
-# def send():
-#     if request.method == 'POST':
-#         if request.form.get('action2') == 'send_email':
-
-#             subject = request.form.get('subject')
-#             body = request.form.get('body')
-#             smtp_server = "smtp.gmail.com"
-
-#             with sqlite3.connect('database.sqlite') as conn:
-#                 send_email(subject, body, smtp_server, conn)
-            
-#     return render_template('send.html')

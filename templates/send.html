@@ -9,6 +9,21 @@
 
 </body>
 
-
+<form method="post" action="/send">
+    <div>
+        <label for="phone">Subject</label>
+        <input type="text" id="subject" name="subject" required>
+    </div>
+    <br>
+    <div>
+        <label for="body">body</label>
+        <input type="text" id="" name="body" required>
+    </div>
+    <br>
+    <div>
+        <input type="hidden" name="action" value="send">
+        <input type="submit" value="send">
+    </div>
+</form>
 
 </html>
