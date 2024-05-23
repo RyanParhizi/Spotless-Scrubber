@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request
 import sqlite3
 from database import add_contact, fetch_all_contacts, remove_contacts_by_ID
 from emailage import send_email 
@@ -32,7 +32,7 @@ def database():
             lastname = request.form['lastname']
             phone = request.form['phone']
             email = request.form['email']
-            
+            #if a specific phone number or email is already in the database promt the user to make sure they want to add this 
             with sqlite3.connect('database.sqlite') as conn:
                 add_contact(conn, firstname, lastname, phone, email)
                 
