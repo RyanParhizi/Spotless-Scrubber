@@ -7,3 +7,4 @@ def Levenshtein_distance(a, b):
         return Levenshtein_distance(a[1:], b[1:])
     else:
         return 1 + min(Levenshtein_distance(a[1:], b), Levenshtein_distance(a, b[1:]), Levenshtein_distance(a[1:], b[1:]))
+
