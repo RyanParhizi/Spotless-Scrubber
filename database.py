@@ -1,21 +1,6 @@
 import sqlite3
 from faker import Faker
 
-# conn = sqlite3.connect('database.sqlite')
-# cur = conn.cursor()
-
-# cur.execute("""
-# CREATE TABLE contacts (
-#     ID INTEGER PRIMARY KEY,
-#     firstname TEXT,
-#     lastname TEXT,
-#     phone TEXT,
-#     email TEXT
-# )""")
-
-# conn.commit()
-# conn.close()
-
 def add_contact(conn, firstname, lastname, phone, email):
     cur = conn.cursor()
     cur.execute("SELECT MAX(ID) FROM contacts")

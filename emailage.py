@@ -13,7 +13,7 @@ def send_email(subject, body, smtp_server, conn):
         msg["Subject"] = subject
         msg.attach(MIMEText(body, "plain"))
         message_string = msg.as_string()
-        ontext = ssl.create_default_context()
+        context = ssl.create_default_context()
 
         for contacts in contacts: 
             server = smtplib.SMTP_SSL(smtp_server, 465)
